@@ -1,41 +1,44 @@
+-- Create the database
+CREATE DATABASE crowdfunding_db;
 
--- Create Contacts table
-CREATE TABLE Contacts (
+-- Use the database
+USE crowdfunding_db;
+
+-- Create the category table
+CREATE TABLE category (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL
+);
+
+-- Create the subcategory table
+CREATE TABLE subcategory (
+    subcategory_id INT AUTO_INCREMENT PRIMARY KEY,
+    subcategory_name VARCHAR(255) NOT NULL,
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
+
+-- Create the campaign table
+CREATE TABLE campaign (
+    campaign_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    goal FLOAT NOT NULL,
+    pledged FLOAT NOT NULL,
+    backers_count INT NOT NULL,
+    launched_date DATETIME,
+    end_date DATETIME,
+    category_id INT,
+    subcategory_id INT,
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (subcategory_id) REFERENCES subcategory(subcategory_id)
+);
+
+-- Create the contacts table
+CREATE TABLE contacts (
     contact_id INT PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(255)
 );
 
--- Create Category table
-CREATE TABLE Category (
-    category_id VARCHAR(10) PRIMARY KEY,
-    category VARCHAR(255)
-);
-
--- Create Subcategory table
-CREATE TABLE Subcategory (
-    subcategory_id VARCHAR(10) PRIMARY KEY,
-    subcategory VARCHAR(255)
-);
-
--- Create Campaign table
-CREATE TABLE Campaign (
-    cf_id INT PRIMARY KEY,
-    contact_id INT,
-    company_name VARCHAR(255),
-    description TEXT,
-    goal FLOAT,
-    pledged FLOAT,
-    outcome VARCHAR(50),
-    backers_count INT,
-    country VARCHAR(50),
-    currency VARCHAR(10),
-    launched_date DATE,
-    end_date DATE,
-    category_id VARCHAR(10),
-    subcategory_id VARCHAR(10),
-    FOREIGN KEY (contact_id) REFERENCES Contacts(contact_id),
-    FOREIGN KEY (category_id) REFERENCES Category(category_id),
-    FOREIGN KEY (subcategory_id) REFERENCES Subcategory(subcategory_id)
-);
